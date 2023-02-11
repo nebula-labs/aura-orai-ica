@@ -1,0 +1,43 @@
+global:
+  api-listen-addr: :5183
+  timeout: 10s
+  memo: ""
+  light-cache-size: 20
+chains:
+  fachain:
+    type: cosmos
+    value:
+      key: rly-fachain
+      chain-id: test-fac
+      rpc-addr: http://fachain:26657
+      account-prefix: fac
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01ufac
+      debug: false
+      timeout: 20s
+      output-format: json
+      sign-mode: direct
+  osmosis:
+    type: cosmos
+    value:
+      key: rly-osmo
+      chain-id: test-osmo
+      rpc-addr: http://osmosis:26657
+      account-prefix: osmo
+      keyring-backend: test
+      gas-adjustment: 1.2
+      gas-prices: 0.01uosmo
+      debug: false
+      timeout: 20s
+      output-format: json
+      sign-mode: direct
+paths:
+  fachain-osmosis:
+    src:
+      chain-id: test-fac
+    dst:
+      chain-id: test-osmo
+    src-channel-filter:
+      rule: ""
+      channel-list: []
