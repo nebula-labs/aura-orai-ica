@@ -5,7 +5,7 @@ DST_ADDRESS=$2
 
 # check if ROOT empty
 if [ -z "$ROOT" ]; then
-    source network/vars.sh
+    source vars.sh
 fi
 
 docker container stop relayer &>/dev/null

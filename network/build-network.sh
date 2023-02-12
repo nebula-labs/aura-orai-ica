@@ -54,9 +54,9 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 install_binary aura https://github.com/nebula-labs/aura.git enable-ica
-install_binary orai https://github.com/oraichain/orai.git v0.41.2
-install_binary relayer https://github.com/nghuyenthevinh2000/relayer.git andrew/client_icq_stride_v3
+# install_binary orai https://github.com/oraichain/orai.git v0.41.2
+# install_binary relayer https://github.com/nghuyenthevinh2000/relayer.git andrew/client_icq_stride_v3
 
 build_docker aura enable-ica --no-cache
-build_docker orai v0.41.2 --no-cache
-build_docker relayer andrew/client_icq_stride_v3
+# build_docker orai v0.41.2 --no-cache
+# build_docker relayer andrew/client_icq_stride_v3

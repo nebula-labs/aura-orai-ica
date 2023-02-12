@@ -1,13 +1,6 @@
 #!/bin/bash
 
-ROOT=$1
-
-# check if ROOT is empty
-if [ -z "$ROOT" ]; then
-    ROOT=$(pwd)
-fi
-
-source $ROOT/network/vars.sh
+source vars.sh
 cd network
 
 start_docker() {
