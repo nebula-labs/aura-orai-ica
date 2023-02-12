@@ -1,7 +1,14 @@
 #!/bin/bash
 
-source scripts/vars.sh
-cd scripts/network
+ROOT=$1
+
+# check if ROOT is empty
+if [ -z "$ROOT" ]; then
+    ROOT=$(pwd)
+fi
+
+source $ROOT/network/vars.sh
+cd network
 
 start_docker() {
     name=$1
@@ -21,22 +28,17 @@ rm -rf config logs
 mkdir logs
 
 # init chain
-bash init-chain.sh $ROOT/build/binary/fachaind ufac $ROOT/scripts/network/config/fachain
-bash init-chain.sh $ROOT/build/binary/osmosisd uosmo $ROOT/scripts/network/config/osmosis
+bash init-chain.sh $ROOT/build/binary/aurad uaura $ROOT/network/config/aura
+bash init-chain.sh $ROOT/build/binary/oraid uorai $ROOT/network/config/orai
 
 # start docker
-start_docker fachain
-start_docker osmosis
+start_docker aura
+start_docker orai
 
 # start relayer
 bash setup-relayer.sh
 
-# ibc-transfer osmo to fachain
-${BINARY[1]} tx ibc-transfer transfer transfer channel-0 $FACHAIN_2 1000000000uosmo --from test1 --keyring-backend test --home ${DIR[1]} --chain-id test-osmo --fees 100000uosmo --yes --node ${NODE[1]}
+# ibc-transfer orai to aura
+${BINARY[1]} tx ibc-transfer transfer transfer channel-0 $AURA_2 1000000000uorai --from test1 --keyring-backend test --home ${DIR[1]} --chain-id test-orai --fees 100000uorai --yes --node ${NODE[1]}
 
-# setup pool on osmosis
-${BINARY[0]} tx ibc-transfer transfer transfer channel-0 $OSMO_2 1000000000ufac --from test1 --keyring-backend test --home ${DIR[0]} --chain-id test-fac --fees 100000ufac --yes --node ${NODE[0]}
-
-sleep 15
-
-cd ../..
+cd ..

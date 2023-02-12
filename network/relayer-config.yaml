@@ -4,40 +4,40 @@ global:
   memo: ""
   light-cache-size: 20
 chains:
-  fachain:
+  aura:
     type: cosmos
     value:
-      key: rly-fachain
-      chain-id: test-fac
-      rpc-addr: http://fachain:26657
-      account-prefix: fac
+      key: rly-aura
+      chain-id: test-aura
+      rpc-addr: http://aura:26657
+      account-prefix: aura
       keyring-backend: test
       gas-adjustment: 1.2
-      gas-prices: 0.01ufac
+      gas-prices: 0.01uaura
       debug: false
       timeout: 20s
       output-format: json
       sign-mode: direct
-  osmosis:
+  orai:
     type: cosmos
     value:
-      key: rly-osmo
-      chain-id: test-osmo
-      rpc-addr: http://osmosis:26657
-      account-prefix: osmo
+      key: rly-orai
+      chain-id: test-orai
+      rpc-addr: http://orai:26657
+      account-prefix: orai
       keyring-backend: test
       gas-adjustment: 1.2
-      gas-prices: 0.01uosmo
+      gas-prices: 0.01uorai
       debug: false
       timeout: 20s
       output-format: json
       sign-mode: direct
 paths:
-  fachain-osmosis:
+  aura-orai:
     src:
-      chain-id: test-fac
+      chain-id: test-aura
     dst:
-      chain-id: test-osmo
+      chain-id: test-orai
     src-channel-filter:
       rule: ""
       channel-list: []

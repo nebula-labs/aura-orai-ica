@@ -5,34 +5,34 @@ DST_ADDRESS=$2
 
 # check if ROOT empty
 if [ -z "$ROOT" ]; then
-    source scripts/vars.sh
+    source network/vars.sh
 fi
 
 docker container stop relayer &>/dev/null
 docker container rm relayer &>/dev/null
-rm -rf $ROOT/scripts/network/config/relayer-config $ROOT/scripts/network/logs/relayer.log
+rm -rf $ROOT/network/config/relayer-config $ROOT/network/logs/relayer.log
 
-relayer_config=$ROOT/scripts/network/config/relayer-config/config
-relayer_logs=$ROOT/scripts/network/logs/relayer.log
-relayer_exec="docker-compose -f $ROOT/scripts/network/docker-compose.yml run --rm relayer"
+relayer_config=$ROOT/network/config/relayer-config/config
+relayer_logs=$ROOT/network/logs/relayer.log
+relayer_exec="docker-compose -f $ROOT/network/docker-compose.yml run --rm relayer"
 
 mkdir -p $relayer_config
 # modify relayer-config.yaml to reflect the correct contract address
-cp $ROOT/scripts/network/relayer-config.yaml $relayer_config/config.yaml
+cp $ROOT/network/relayer-config.yaml $relayer_config/config.yaml
 
-$relayer_exec rly keys restore fachain rly-fachain "$MNEMONIC_3" >> $relayer_logs 2>&1
-$relayer_exec rly keys restore osmosis rly-osmo "$MNEMONIC_3" >> $relayer_logs 2>&1
+$relayer_exec rly keys restore aura rly-aura "$MNEMONIC_3" >> $relayer_logs 2>&1
+$relayer_exec rly keys restore orai rly-orai "$MNEMONIC_3" >> $relayer_logs 2>&1
 
 printf "Waiting for relayer to start..."
-$relayer_exec rly transact link fachain-osmosis >> $relayer_logs 2>&1
+$relayer_exec rly transact link aura-orai >> $relayer_logs 2>&1
 
 if [[ "${PIPESTATUS[0]}" = "1" ]]; then
     echo "Failed to link chains"
     exit 1
 fi
 
-docker-compose -f $ROOT/scripts/network/docker-compose.yml up -d relayer
-docker-compose -f $ROOT/scripts/network/docker-compose.yml logs -f relayer | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >> $relayer_logs 2>&1 &
+docker-compose -f $ROOT/network/docker-compose.yml up -d relayer
+docker-compose -f $ROOT/network/docker-compose.yml logs -f relayer | sed -r -u "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" >> $relayer_logs 2>&1 &
 
 echo "Done"
 

@@ -32,4 +32,4 @@ WORKDIR /home/orai
 
 EXPOSE 26657 26656 1317 9090
 
-CMD ["oraid", "start"]
+CMD ["oraid", "start", "--home", "/home/orai/.oraid"]

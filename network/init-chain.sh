@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source $ROOT/scripts/vars.sh
+source $ROOT/network/vars.sh
 
 BINARY=$1
 DENOM=$2
@@ -49,13 +49,9 @@ update_test_genesis '.app_state["crisis"]["constant_fee"]={"denom": $DENOM,"amou
 update_test_genesis '.app_state["staking"]["params"]["bond_denom"]=$DENOM' $DENOM
 
 # check if denom is ${DENOMS[0]} or ${DENOMS[1]}
-if [[ $DENOM == ${DENOMS[0]} ]]; then
-  # fachain
-  update_test_genesis '.app_state["feeabstraction"]["base_denom"]=$DENOM' $DENOM
-else
-  # osmosis
-  update_test_genesis '.app_state["txfees"]["basedenom"]=$DENOM' $DENOM
-  update_test_genesis '.app_state["interchainaccounts"]["host_genesis_state"]["params"]["allow_messages"]=["/osmosis.gamm.v1beta1.MsgSwapExactAmountIn","/ibc.applications.transfer.v1.MsgTransfer"]'
+if [[ $DENOM == ${DENOMS[1]} ]]; then
+  # orai
+  update_test_genesis '.app_state["interchainaccounts"]["host_genesis_state"]["params"]["allow_messages"]=["/ibc.applications.transfer.v1.MsgTransfer"]'
 fi
 
 toml set --toml-path $DIR/config/config.toml p2p.seeds ""
